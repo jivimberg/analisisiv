@@ -50,7 +50,7 @@ public class MainFrame extends JFrame{
 	
 	//arreglar!!!
     //solo de prueba!!!
-	private Action showNumberOffsetAction = new AbstractAction("Mostrar números") {
+	private Action showNumberOffsetAction = new AbstractAction("Mostrar posición") {
         public void actionPerformed(ActionEvent e) {
         	g.showNumberOffset(!g.getShowNumberOffset());
         }

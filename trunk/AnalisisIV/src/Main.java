@@ -13,9 +13,9 @@ public class Main {
 	private static MainFrame fm;
 	public static void main(String[] args) {
 		setLookAndFeel();
-//		fm = new MainFrame();
-//		showSplashScreen();
-		new MainFrame().setVisible(true);
+		fm = new MainFrame();
+		showSplashScreen();
+//		new MainFrame().setVisible(true);
 	}
 	
 	public static void setLookAndFeel(){
@@ -39,7 +39,7 @@ public class Main {
 		}
 		fm.setVisible(true);
 		try {
-			Thread.sleep(2000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
