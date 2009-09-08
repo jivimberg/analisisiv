@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+ 
+<project name="AnalisisIV" default="CreateExecutableJarFileWithExternalLibrary">
+	<target name="CreateExecutableJarFileWithExternalLibrary">
+		<jar destfile="MyApplication.jar">
+			<zipfileset dir="classes" prefix="" />
+			<zipfileset src="substance.jar" />
+			<manifest>
+				<attribute name="Main-Class" value="Main" />
+			</manifest>
+		</jar>
+	</target>
+</project>
