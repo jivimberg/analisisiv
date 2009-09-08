@@ -1,11 +1,26 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Font;
 
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+@SuppressWarnings("serial")
 public class LeftPanel extends JPanel {
 
-    public LeftPanel() {
+	private JButton showNumberOffsetButton;
+	private Action showNumberOffsetAction;
+	private Action restartAxisAction;
+	
+    public LeftPanel(Action showNumberOffsetAction, Action restartAxisAction) {
+    	this.showNumberOffsetAction = showNumberOffsetAction;
+    	this.restartAxisAction = restartAxisAction;
         this.setBorder(BorderFactory.createTitledBorder("Left Panel"));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         initComponents();
@@ -25,38 +40,15 @@ public class LeftPanel extends JPanel {
         panel1.add(Box.createGlue());
         this.add(panel1);
         
-        JButton toGraph = new JButton("Graficar");
-        JButton derive = new JButton("Derivar");
-        
+        showNumberOffsetButton = new JButton(showNumberOffsetAction);
+        JButton derive = new JButton(restartAxisAction);
         JPanel panel2 = new JPanel();
         panel2.add(Box.createGlue());
-        panel2.add(toGraph);
+        panel2.add(showNumberOffsetButton);
         panel2.add(Box.createGlue());
         panel2.add(derive);
         panel2.add(Box.createGlue());
         this.add(panel2);
         this.add(Box.createGlue());
-        
-//        JTextField textField = new JTextField();
-//        GridBagConstraints constraints = new GridBagConstraints();
-//        constraints.gridx = 0; // El área de texto empieza en la columna cero.
-//        constraints.gridy = 0; // El área de texto empieza en la fila cero
-//        constraints.gridwidth = 2; // El área de texto ocupa dos columnas.
-//        constraints.gridheight = 2; // El área de texto ocupa 2 filas.
-//        this.add(textField, constraints);
-//
-//        JButton button = new JButton("Resolver");
-//        constraints.gridx = 0; // El área de texto empieza en la columna cero.
-//        constraints.gridy = 4; // El área de texto empieza en la fila cero
-//        constraints.gridwidth = 2; // El área de texto ocupa dos columnas.
-//        constraints.gridheight = 2; // El área de texto ocupa 2 filas.
-//        this.add(button, constraints);
-//
-//        JButton button1 = new JButton("Derivar");
-//        constraints.gridx = 2; // El área de texto empieza en la columna cero.
-//        constraints.gridy = 4; // El área de texto empieza en la fila cero
-//        constraints.gridwidth = 2; // El área de texto ocupa dos columnas.
-//        constraints.gridheight = 2; // El área de texto ocupa 2 filas.
-//        this.add(button1, constraints);
     }
 }
