@@ -1,12 +1,19 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JFrame;
+import javax.swing.JToolBar;
+
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame{
 
 	LeftPanel lPanel;
-	Graph g;
+	Graphic g;
 	
     public MainFrame() {
         this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -16,7 +23,7 @@ public class MainFrame extends JFrame{
 //        corrector.listeners.add(this);
 //        buttonsManager = new ButtonsManager(corrector, this);
         initComponents();
-        setVisible(true);
+//        this.setVisible(false);
     }
 
     private void initComponents() {
@@ -25,28 +32,33 @@ public class MainFrame extends JFrame{
                 System.exit(0);
             }
         });
-
-        
         JToolBar toolBar = new JToolBar();
-        Graficacion graficacion = new Graficacion();
-        graficacion.setDimensiones(500, 500);
-        double[] X = new double[5];
-        X[0] = 1;
-        X[1] = 2;
-        X[2] = 3;
-        X[3] = 4;
-        X[4] = 5;
-		double[] Y = new double[5];
-		Y[0] = 1;
-        Y[1] = 2;
-        Y[2] = 3;
-        Y[3] = 4;
-        Y[4] = 5;
-		graficacion.Datos(X,Y,500,500,"Grafica 1 X vs Y","X","Y"); 
-        lPanel = new LeftPanel();
-        g = new Graph();
+        lPanel = new LeftPanel(showNumberOffsetAction, restartAxisAction);
+        g = new Graphic();
         this.getContentPane().add(lPanel, BorderLayout.WEST);
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
         this.getContentPane().add(g, BorderLayout.CENTER);
     }
+    
+    
+    
+    
+    
+    
+	
+	
+	
+	//arreglar!!!
+    //solo de prueba!!!
+	private Action showNumberOffsetAction = new AbstractAction("Mostrar números") {
+        public void actionPerformed(ActionEvent e) {
+        	g.showNumberOffset(!g.getShowNumberOffset());
+        }
+    };
+    
+    private Action restartAxisAction = new AbstractAction("Centrar ejes") {
+        public void actionPerformed(ActionEvent e) {
+        	g.resetPosition();
+        }
+    };
 }

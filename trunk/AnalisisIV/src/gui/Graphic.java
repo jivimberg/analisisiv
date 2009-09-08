@@ -11,7 +11,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 @SuppressWarnings("serial")
-public class Graph extends Canvas implements MouseMotionListener, MouseListener, MouseWheelListener {
+public class Graphic extends Canvas implements MouseMotionListener, MouseListener, MouseWheelListener {
 	
 	private int positionX;
 	private int positionY;
@@ -23,9 +23,15 @@ public class Graph extends Canvas implements MouseMotionListener, MouseListener,
 	private int scale;
 	
 	private boolean positionsInit;
+	private boolean showNumberOffset;
+
+	private static final Color backgroundColor = Color.WHITE;
+	private static final Color axisColor = Color.RED;
+	private static final Color gridColor = new Color(210,210,210);
+	private static final Color numberColor = new Color(50,50,50);
 	
-	public Graph() {
-		this.setBackground(Color.WHITE);
+	public Graphic() {
+		this.setBackground(backgroundColor);
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
 		this.addMouseWheelListener(this);
@@ -33,11 +39,7 @@ public class Graph extends Canvas implements MouseMotionListener, MouseListener,
 	}
 	public void paint(Graphics g) {
 		if(!positionsInit) {
-			positionX = getWidth()/2;
-			positionY = getHeight()/2;
-			moveToX = positionX;
-			moveToY = positionY;
-			positionsInit = true;
+			resetPosition();
 		}
 		g.setFont(new Font("", Font.PLAIN, (scale-5)/2));
 		paintAxis(g);
@@ -45,7 +47,7 @@ public class Graph extends Canvas implements MouseMotionListener, MouseListener,
 	}
 	
 	private void paintAxis(Graphics g) {
-		g.setColor(Color.RED);
+		g.setColor(axisColor);
 		g.drawLine(0, moveToY, this.getWidth(), moveToY);
 		g.drawLine(moveToX, 0, moveToX, this.getHeight());
 	}
@@ -64,25 +66,27 @@ public class Graph extends Canvas implements MouseMotionListener, MouseListener,
 				quantity++;
 			}
 			for(int i = 0; i <= this.getWidth()/scale; i++) {
-				g.setColor(new Color(210,210,210));
+				g.setColor(gridColor);
 				g.drawLine(pos + (i*scale), 0, pos + (i * scale), this.getHeight());
-				g.setColor(new Color(50,50,50));
+				g.setColor(numberColor);
 				g.drawString(""+((i+1)+(quantity)), pos+(scale*i)+1, moveToY-1);
 			}
-				
+			if(showNumberOffset) {
+				paintNumberOffsetY(g, 20);				
+			}
 		} else if(moveToX < this.getWidth()) {
-			g.setColor(new Color(50,50,50));
+			g.setColor(numberColor);
 			g.drawString("0", moveToX+1, moveToY-1);
 			for(int i = moveToX/scale; i > 0; i--) {
-				g.setColor(new Color(210,210,210));
+				g.setColor(gridColor);
 				g.drawLine(moveToX - (i*scale), 0, moveToX - (i * scale), this.getHeight());
-				g.setColor(new Color(50,50,50));
+				g.setColor(numberColor);
 				g.drawString("" + (-i), (moveToX-i*scale)+1, moveToY-1);
 			}
 			for(int i = 1; i<=(getWidth()-moveToX)/scale; i++) {
-				g.setColor(new Color(210,210,210));
+				g.setColor(gridColor);
 				g.drawLine(moveToX + (i*scale), 0, moveToX + (i*scale), this.getHeight());
-				g.setColor(new Color(50,50,50));
+				g.setColor(numberColor);
 				g.drawString("" + i, (moveToX+i*scale)+1, moveToY-1);
 			}
 		} else {
@@ -93,16 +97,30 @@ public class Graph extends Canvas implements MouseMotionListener, MouseListener,
 				quantity++;
 			}
 			for(int i = getWidth()/scale; i >= 0; i--) {
-				g.setColor(new Color(210,210,210));
+				g.setColor(gridColor);
 				g.drawLine(pos - (i*scale), 0, pos - (i*scale), getWidth());
-				g.setColor(new Color(50,50,50));
+				g.setColor(numberColor);
 				g.drawString(""+(-(i+1)-(quantity)), pos-(scale*i)+1, moveToY-1);
+			}
+			if(showNumberOffset) {
+				paintNumberOffsetY(g, this.getWidth()-20);
 			}
 		}
 	}
 	
+	private void paintNumberOffsetY(Graphics g, int position) {
+		for(int i = moveToY/scale; i > 0; i--) {
+			g.setColor(numberColor);
+			g.drawString("" + i, position, (moveToY-i*scale)+1);
+		}
+		for(int i = 1; i<=(getHeight()-moveToY)/scale; i++) {
+			g.setColor(numberColor);
+			g.drawString("" + (-i), position, (moveToY+i*scale)+1);
+		}
+	}
+	
 	private void paintGridX(Graphics g) {
-		g.setColor(new Color(210,210,210));
+		g.setColor(gridColor);
 		if(moveToY < 0) {
 			int pos = moveToY;
 			int quantity = -1;
@@ -111,22 +129,25 @@ public class Graph extends Canvas implements MouseMotionListener, MouseListener,
 				quantity++;
 			}
 			for(int i = 0; i <= this.getHeight()/scale; i++) {
-				g.setColor(new Color(210,210,210));
+				g.setColor(gridColor);
 				g.drawLine(0, pos + (i*scale), this.getWidth(), pos + (i * scale));
-				g.setColor(new Color(50,50,50));
+				g.setColor(numberColor);
 				g.drawString(""+(-(i+1)-(quantity)), moveToX+1, pos+(scale*i)+1);
+			}
+			if(showNumberOffset) {
+				paintNumberOffsetX(g, 20);
 			}
 		} else if(moveToY < this.getHeight()) {
 			for(int i = moveToY/scale; i > 0; i--) {
-				g.setColor(new Color(210,210,210));
+				g.setColor(gridColor);
 				g.drawLine(0, moveToY - (i*scale), this.getWidth(), moveToY - (i * scale));
-				g.setColor(new Color(50,50,50));
+				g.setColor(numberColor);
 				g.drawString("" + i, moveToX+1,(moveToY-i*scale)+1);
 			}
 			for(int i = 1; i<=(getHeight()-moveToY)/scale; i++) {
-				g.setColor(new Color(210,210,210));
+				g.setColor(gridColor);
 				g.drawLine(0, moveToY + (i*scale), this.getWidth(), moveToY + (i*scale));
-				g.setColor(new Color(50,50,50));
+				g.setColor(numberColor);
 				g.drawString("" + (-i), moveToX+1, (moveToY+i*scale)+1);
 			}
 		} else {
@@ -137,11 +158,25 @@ public class Graph extends Canvas implements MouseMotionListener, MouseListener,
 				quantity++;
 			}
 			for(int i = getHeight()/scale; i >= 0; i--) {
-				g.setColor(new Color(210,210,210));
+				g.setColor(gridColor);
 				g.drawLine(0, pos - (i*scale), getWidth(), pos - (i*scale));
-				g.setColor(new Color(50,50,50));
+				g.setColor(numberColor);
 				g.drawString(""+((i+1)+(quantity)), moveToX+1, pos-(scale*i)+1);
 			}
+			if(showNumberOffset) {
+				paintNumberOffsetX(g, this.getHeight() - 20);
+			}
+		}
+	}
+	
+	private void paintNumberOffsetX(Graphics g, int position) {
+		for(int i = moveToX/scale; i > 0; i--) {
+			g.setColor(numberColor);
+			g.drawString("" + (-i), (moveToX-i*scale)+1, position);
+		}
+		for(int i = 1; i<=(getWidth()-moveToX)/scale; i++) {
+			g.setColor(numberColor);
+			g.drawString("" + (-i), (moveToX+i*scale)+1, position);
 		}
 	}
 
@@ -211,6 +246,23 @@ public class Graph extends Canvas implements MouseMotionListener, MouseListener,
 			positionX = moveToX;
 			positionY = moveToY;
 		}
+	}
+	
+	public void showNumberOffset(boolean showNumberOffset) {
+		this.showNumberOffset = showNumberOffset;
+		repaint();
+	}
+	
+	public boolean getShowNumberOffset() {
+		return showNumberOffset;
+	}
+	
+	public void resetPosition() {
+		positionX = getWidth()/2;
+		positionY = getHeight()/2;
+		moveToX = positionX;
+		moveToY = positionY;
+		positionsInit = true;
 		repaint();
 	}
 }
