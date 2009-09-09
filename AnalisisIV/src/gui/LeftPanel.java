@@ -15,6 +15,7 @@ import javax.swing.JTextField;
 public class LeftPanel extends JPanel {
 
 	private JButton showNumberOffsetButton;
+	private JButton restartAxisActionButton;
 	private Action showNumberOffsetAction;
 	private Action restartAxisAction;
 	
@@ -41,12 +42,14 @@ public class LeftPanel extends JPanel {
         this.add(panel1);
         
         showNumberOffsetButton = new JButton(showNumberOffsetAction);
-        JButton derive = new JButton(restartAxisAction);
+        showNumberOffsetButton.setToolTipText("Muestra la posición si alguno de los ejes no se ve");
+        restartAxisActionButton = new JButton(restartAxisAction);
+        restartAxisActionButton.setToolTipText("Centra los ejes en el medio de la pantalla");
         JPanel panel2 = new JPanel();
         panel2.add(Box.createGlue());
         panel2.add(showNumberOffsetButton);
         panel2.add(Box.createGlue());
-        panel2.add(derive);
+        panel2.add(restartAxisActionButton);
         panel2.add(Box.createGlue());
         this.add(panel2);
         this.add(Box.createGlue());
