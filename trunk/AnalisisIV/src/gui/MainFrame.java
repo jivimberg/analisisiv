@@ -35,9 +35,10 @@ public class MainFrame extends JFrame{
         JToolBar toolBar = new JToolBar();
         lPanel = new LeftPanel(showNumberOffsetAction, restartAxisAction);
         g = new Graphic();
+        Graphics2 g2 = new Graphics2();
         this.getContentPane().add(lPanel, BorderLayout.WEST);
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
-        this.getContentPane().add(g, BorderLayout.CENTER);
+        this.getContentPane().add(g2, BorderLayout.CENTER);
     }
     
     
