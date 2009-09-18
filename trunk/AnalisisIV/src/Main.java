@@ -13,9 +13,9 @@ public class Main {
 	private static MainFrame fm;
 	public static void main(String[] args) {
 		setLookAndFeel();
-		fm = new MainFrame();
-		showSplashScreen();
-//		new MainFrame().setVisible(true);
+//		fm = new MainFrame();
+//		showSplashScreen();
+		new MainFrame().setVisible(true);
 	}
 	
 	public static void setLookAndFeel(){
