@@ -13,6 +13,12 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Line2D;
 
+import functions.Cos;
+import functions.Function;
+import functions.Sin;
+import functions.Variable;
+import functions.basics.Sum;
+
 @SuppressWarnings("serial")
 public class Graphic2 extends Canvas implements MouseMotionListener,
 		MouseListener, MouseWheelListener {
@@ -235,55 +241,17 @@ public class Graphic2 extends Canvas implements MouseMotionListener,
 	private void paintFunction(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g.setColor(Color.BLUE);
-		pow(g2, 2);
-		g.setColor(Color.GREEN);
-		pow(g2, 3);
-		g.setColor(Color.MAGENTA);
-		sin(g2);
-		g.setColor(Color.CYAN);
-		cos(g2);
-	}
-
-	private void pow(Graphics2D g2, int power) {
-		double x1 = 0;
-		double x2 = 0;
-		double y1 = 0;
-		double y2 = 0;
-
-		double from = -(positionX + scale) / scale;
-		double to = (scale + getWidth()) / scale + scale;
-		while (from + 0.1 < to) {
-			x1 = from;
-			y1 = -Math.pow(x1, power);
-			x2 = (from + 0.1);
-			y2 = -Math.pow(x2, power);
-			g2.draw(new Line2D.Double(x1 * scale + positionX, y1 * scale
-				+ positionY, x2 * scale + positionX, y2 * scale + positionY));
-			from += 0.1;
-		}
-	}
-
-	private void sin(Graphics2D g2) {
-		double x1 = 0;
-		double x2 = 0;
-		double y1 = 0;
-		double y2 = 0;
-
-		double from = -(positionX + scale) / scale;
-		double to = (from + getWidth() / scale + scale * 2);
-
-		while (from + 0.1 < to) {
-			x1 = from;
-			y1 = -Math.sin(x1);
-			x2 = (from + 0.1);
-			y2 = -Math.sin(x2);
-			g2.draw(new Line2D.Double(x1 * scale + positionX, y1 * scale
-				+ positionY, x2 * scale + positionX, y2 * scale + positionY));
-			from += 0.1;
-		}
+		Sum f = new Sum();
+		f.addFunction(new Sin(new Variable()));
+		f.addFunction(new Cos(new Variable()));
+		System.out.println("funcion: " + f.toString());		
+		System.out.println("1ra derivada: " + f.derive().toString());
+		System.out.println("2da derivada: " + f.derive().derive().toString());
+		
+		resolveFunction(g2, f);
 	}
 	
-	private void cos(Graphics2D g2) {
+	private void resolveFunction(Graphics2D g2, Function f) {
 		double x1 = 0;
 		double x2 = 0;
 		double y1 = 0;
@@ -294,13 +262,12 @@ public class Graphic2 extends Canvas implements MouseMotionListener,
 
 		while (from + 0.1 < to) {
 			x1 = from;
-			y1 = -Math.cos(x1)*4;
+			y1 = -f.resolve(x1);
 			x2 = (from + 0.1);
-			y2 = -Math.cos(x2)*4;
+			y2 = -f.resolve(x2);
 			g2.draw(new Line2D.Double(x1 * scale + positionX, y1 * scale
 				+ positionY, x2 * scale + positionX, y2 * scale + positionY));
 			from += 0.1;
 		}
 	}
-
 }
