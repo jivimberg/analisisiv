@@ -14,7 +14,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.geom.Line2D;
 
 @SuppressWarnings("serial")
-public class Graphics2 extends Canvas implements MouseMotionListener,
+public class Graphic2 extends Canvas implements MouseMotionListener,
 		MouseListener, MouseWheelListener {
 
 	private int positionX;
@@ -32,7 +32,7 @@ public class Graphics2 extends Canvas implements MouseMotionListener,
 	private static final Color gridColor = new Color(210, 210, 210);
 	private static final Color numberColor = new Color(50, 50, 50);
 
-	public Graphics2() {
+	public Graphic2() {
 		showNumberOffset = true;
 		this.setBackground(backgroundColor);
 		this.addMouseMotionListener(this);
@@ -53,11 +53,9 @@ public class Graphics2 extends Canvas implements MouseMotionListener,
 	}
 
 	private void paintAxis(Graphics g) {
-		int moveToX = (int) positionX;
-		int moveToY = (int) positionY;
 		g.setColor(axisColor);
-		g.drawLine(0, moveToY, this.getWidth(), moveToY);
-		g.drawLine(moveToX, 0, moveToX, this.getHeight());
+		g.drawLine(0, positionY, getWidth(), positionY);
+		g.drawLine(positionX, 0, positionX, getHeight());
 	}
 
 	private void paintGrid(Graphics g) {
@@ -70,45 +68,46 @@ public class Graphics2 extends Canvas implements MouseMotionListener,
 	private void paintYGrid(Graphics g) {
 		for (int i = 1; i <= (getWidth() - positionX) / scale; i++) {
 			if ((positionX + i * scale) > 0) {
-				g.setColor(gridColor);
-				g.drawLine(positionX + i * scale, 0, positionX + i * scale,
-						getHeight());
-				g.setColor(numberColor);
-				g.drawString("" + i, positionX + i * scale + 1, positionY - 1);
+				paintGridLine(g, positionX + i * scale, 0, positionX + i * scale, getHeight());
+				paintNumber(g, ""+i, positionX + i * scale + 1, positionY - 1);
 			}
 		}
 		for (int i = positionX / scale; i > 0; i--) {
 			if ((positionX - i * scale) < getWidth()) {
-				g.setColor(gridColor);
-				g.drawLine(positionX - i * scale, 0, positionX - i * scale,
+				paintGridLine(g, positionX - i * scale, 0, positionX - i * scale,
 						getHeight());
-				g.setColor(numberColor);
-				g.drawString("" + (-i), positionX - i * scale + 1,
+				paintNumber(g, "" + (-i), positionX - i * scale + 1,
 						positionY - 1);
 			}
 		}
 	}
-
+	
 	private void paintXGrid(Graphics g) {
 		for (int i = 1; i <= (getHeight() - positionY) / scale; i++) {
 			if ((positionY + i * scale) > 0) {
-				g.setColor(gridColor);
-				g.drawLine(0, positionY + i * scale, getWidth(), positionY + i
+				paintGridLine(g, 0, positionY + i * scale, getWidth(), positionY + i
 						* scale);
-				g.setColor(numberColor);
-				g.drawString("" + (-i), positionX + 1, positionY + i * scale
+				paintNumber(g, "" + (-i), positionX + 1, positionY + i * scale
 						- 1);
 			}
 		}
 		for (int i = positionY / scale; i > 0; i--) {
 			if ((positionY - i * scale) < getHeight()) {
-				g.setColor(gridColor);
-				g.drawLine(0, positionY - i * scale, getWidth(), positionY - i
+				paintGridLine(g, 0, positionY - i * scale, getWidth(), positionY - i
 						* scale);
-				g.setColor(numberColor);
-				g.drawString("" + i, positionX + 1, positionY - i * scale - 1);
+				paintNumber(g, "" + i, positionX + 1, positionY - i * scale - 1);
 			}
 		}
+	}
+	
+	private void paintGridLine(Graphics g, int x1, int y1, int x2, int y2) {
+		g.setColor(gridColor);
+		g.drawLine(x1, y1, x2, y2);
+	}
+	
+	private void paintNumber(Graphics g, String number, int x, int y) {
+		g.setColor(numberColor);
+		g.drawString(number, x, y);
 	}
 
 	private void paintOutNumber(Graphics g) {
@@ -125,32 +124,29 @@ public class Graphics2 extends Canvas implements MouseMotionListener,
 			}
 		}
 	}
-
+	
 	private void paintOutNumberY(Graphics g, int position) {
 		for (int i = 1; i <= (getHeight() - positionY) / scale; i++) {
 			if ((positionY + i * scale) > 0) {
-				g.setColor(numberColor);
 				g.drawString("" + (-i), position, positionY + i * scale - 1);
 			}
 		}
 		for (int i = positionY / scale; i > 0; i--) {
 			if ((positionY - i * scale) < getHeight()) {
-				g.setColor(numberColor);
 				g.drawString("" + i, position, positionY - i * scale - 1);
 			}
 		}
 	}
 
 	private void paintOutNumberX(Graphics g, int position) {
+		g.setColor(numberColor);
 		for (int i = 1; i <= (getWidth() - positionX) / scale; i++) {
 			if ((positionX + i * scale) > 0) {
-				g.setColor(numberColor);
 				g.drawString("" + i, positionX + i * scale + 1, position);
 			}
 		}
 		for (int i = positionX / scale; i > 0; i--) {
 			if ((positionX - i * scale) < getWidth()) {
-				g.setColor(numberColor);
 				g.drawString("" + (-i), positionX - i * scale + 1, position);
 			}
 		}
@@ -298,9 +294,9 @@ public class Graphics2 extends Canvas implements MouseMotionListener,
 
 		while (from + 0.1 < to) {
 			x1 = from;
-			y1 = -Math.cos(x1);
+			y1 = -Math.cos(x1)*4;
 			x2 = (from + 0.1);
-			y2 = -Math.cos(x2);
+			y2 = -Math.cos(x2)*4;
 			g2.draw(new Line2D.Double(x1 * scale + positionX, y1 * scale
 				+ positionY, x2 * scale + positionX, y2 * scale + positionY));
 			from += 0.1;
