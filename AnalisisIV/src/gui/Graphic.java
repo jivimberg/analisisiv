@@ -20,26 +20,26 @@ import functions.Variable;
 import functions.basics.Sum;
 
 @SuppressWarnings("serial")
-public class Graphic2 extends Canvas implements MouseMotionListener,
+public class Graphic extends Canvas implements MouseMotionListener,
 		MouseListener, MouseWheelListener {
 
 	private int positionX;
 	private int positionY;
 
-	private Point pressedPoint;
-
 	private int scale;
+	private int fontSize;
+	private Point pressedPoint;
 
 	private boolean positionsInit;
 	private boolean showNumberOffset;
+	private boolean paintPoint;
 
 	private static final Color backgroundColor = Color.WHITE;
 	private static final Color axisColor = Color.RED;
 	private static final Color gridColor = new Color(210, 210, 210);
 	private static final Color numberColor = new Color(50, 50, 50);
 
-	public Graphic2() {
-		showNumberOffset = true;
+	public Graphic() {
 		this.setBackground(backgroundColor);
 		this.addMouseMotionListener(this);
 		this.addMouseListener(this);
@@ -51,11 +51,25 @@ public class Graphic2 extends Canvas implements MouseMotionListener,
 		if (!positionsInit) {
 			resetPosition();
 		}
-		g.setFont(new Font("", Font.PLAIN, (scale - 5) / 2));
+		fontSize = (scale - 5) / 2;
+		g.setFont(new Font("", Font.PLAIN, fontSize));
 		paintAxis(g);
 		paintGrid(g);
 		paintOutNumber(g);
 		paintFunction(g);
+		paintPoint(g);
+	}
+
+	private void paintPoint(Graphics g) {
+		if (paintPoint) {
+			g.setColor(Color.BLUE);
+			g.fillOval(getWidth() / 2 - 1, getHeight() / 2 - 1, 5, 5);
+			g.drawOval(getWidth() / 2 - 1, getHeight() / 2 - 1, 5, 5);
+			g.drawString("(" + (getWidth() / 2 - positionX) / scale + ","
+					+ -(getHeight() / 2 - positionY) / scale + ")",
+					getWidth() / 2 + 4, getHeight() / 2 - 4);
+			paintPoint = false;
+		}
 	}
 
 	private void paintAxis(Graphics g) {
@@ -74,43 +88,44 @@ public class Graphic2 extends Canvas implements MouseMotionListener,
 	private void paintYGrid(Graphics g) {
 		for (int i = 1; i <= (getWidth() - positionX) / scale; i++) {
 			if ((positionX + i * scale) > 0) {
-				paintGridLine(g, positionX + i * scale, 0, positionX + i * scale, getHeight());
-				paintNumber(g, ""+i, positionX + i * scale + 1, positionY - 1);
+				paintGridLine(g, positionX + i * scale, 0, positionX + i
+						* scale, getHeight());
+				paintNumber(g, "" + i, positionX + i * scale + 1, positionY - 1);
 			}
 		}
 		for (int i = positionX / scale; i > 0; i--) {
 			if ((positionX - i * scale) < getWidth()) {
-				paintGridLine(g, positionX - i * scale, 0, positionX - i * scale,
-						getHeight());
+				paintGridLine(g, positionX - i * scale, 0, positionX - i
+						* scale, getHeight());
 				paintNumber(g, "" + (-i), positionX - i * scale + 1,
 						positionY - 1);
 			}
 		}
 	}
-	
+
 	private void paintXGrid(Graphics g) {
 		for (int i = 1; i <= (getHeight() - positionY) / scale; i++) {
 			if ((positionY + i * scale) > 0) {
-				paintGridLine(g, 0, positionY + i * scale, getWidth(), positionY + i
-						* scale);
+				paintGridLine(g, 0, positionY + i * scale, getWidth(),
+						positionY + i * scale);
 				paintNumber(g, "" + (-i), positionX + 1, positionY + i * scale
 						- 1);
 			}
 		}
 		for (int i = positionY / scale; i > 0; i--) {
 			if ((positionY - i * scale) < getHeight()) {
-				paintGridLine(g, 0, positionY - i * scale, getWidth(), positionY - i
-						* scale);
+				paintGridLine(g, 0, positionY - i * scale, getWidth(),
+						positionY - i * scale);
 				paintNumber(g, "" + i, positionX + 1, positionY - i * scale - 1);
 			}
 		}
 	}
-	
+
 	private void paintGridLine(Graphics g, int x1, int y1, int x2, int y2) {
 		g.setColor(gridColor);
 		g.drawLine(x1, y1, x2, y2);
 	}
-	
+
 	private void paintNumber(Graphics g, String number, int x, int y) {
 		g.setColor(numberColor);
 		g.drawString(number, x, y);
@@ -118,19 +133,19 @@ public class Graphic2 extends Canvas implements MouseMotionListener,
 
 	private void paintOutNumber(Graphics g) {
 		if (showNumberOffset) {
-			if (positionX < 0) {
-				paintOutNumberY(g, 20);
+			if (positionX + fontSize < 0) {
+				paintOutNumberY(g, scale);
 			} else if (positionX > getWidth()) {
-				paintOutNumberY(g, getWidth() - 20);
+				paintOutNumberY(g, getWidth() - scale);
 			}
 			if (positionY < 0) {
-				paintOutNumberX(g, 20);
-			} else if (positionY > getHeight()) {
-				paintOutNumberX(g, getHeight() - 20);
+				paintOutNumberX(g, scale);
+			} else if (positionY - fontSize > getHeight()) {
+				paintOutNumberX(g, getHeight() - scale);
 			}
 		}
 	}
-	
+
 	private void paintOutNumberY(Graphics g, int position) {
 		for (int i = 1; i <= (getHeight() - positionY) / scale; i++) {
 			if ((positionY + i * scale) > 0) {
@@ -238,19 +253,22 @@ public class Graphic2 extends Canvas implements MouseMotionListener,
 		repaint();
 	}
 
+	public void goTo(int x, int y) {
+		positionX = getWidth() / 2 - x * scale;
+		positionY = getHeight() / 2 + y * scale;
+		paintPoint = true;
+		repaint();
+	}
+
 	private void paintFunction(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		g.setColor(Color.BLUE);
 		Sum f = new Sum();
 		f.addFunction(new Sin(new Variable()));
 		f.addFunction(new Cos(new Variable()));
-		System.out.println("funcion: " + f.toString());		
-		System.out.println("1ra derivada: " + f.derive().toString());
-		System.out.println("2da derivada: " + f.derive().derive().toString());
-		
 		resolveFunction(g2, f);
 	}
-	
+
 	private void resolveFunction(Graphics2D g2, Function f) {
 		double x1 = 0;
 		double x2 = 0;
@@ -266,7 +284,7 @@ public class Graphic2 extends Canvas implements MouseMotionListener,
 			x2 = (from + 0.1);
 			y2 = -f.resolve(x2);
 			g2.draw(new Line2D.Double(x1 * scale + positionX, y1 * scale
-				+ positionY, x2 * scale + positionX, y2 * scale + positionY));
+					+ positionY, x2 * scale + positionX, y2 * scale + positionY));
 			from += 0.1;
 		}
 	}

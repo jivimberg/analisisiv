@@ -23,7 +23,6 @@ public class MainFrame extends JFrame{
 //        corrector.listeners.add(this);
 //        buttonsManager = new ButtonsManager(corrector, this);
         initComponents();
-//        this.setVisible(false);
     }
 
     private void initComponents() {
@@ -33,12 +32,11 @@ public class MainFrame extends JFrame{
             }
         });
         JToolBar toolBar = new JToolBar();
-        lPanel = new LeftPanel(showNumberOffsetAction, restartAxisAction);
+        lPanel = new LeftPanel(showNumberOffsetAction, restartAxisAction, goToAction);
         g = new Graphic();
-        Graphic2 g2 = new Graphic2();
         this.getContentPane().add(lPanel, BorderLayout.WEST);
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
-        this.getContentPane().add(g2, BorderLayout.CENTER);
+        this.getContentPane().add(g, BorderLayout.CENTER);
     }
     
     
@@ -61,5 +59,13 @@ public class MainFrame extends JFrame{
         public void actionPerformed(ActionEvent e) {
         	g.resetPosition();
         }
+    };
+    
+    private Action goToAction = new AbstractAction("Ir") {
+    	public void actionPerformed(ActionEvent e) {
+    		if(lPanel.getGoToX() != null && lPanel.getGoToY() != null) {
+    			g.goTo(lPanel.getGoToX(), lPanel.getGoToY());    			
+    		}
+    	}
     };
 }
