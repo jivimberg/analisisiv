@@ -13,6 +13,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Line2D;
 
+import functions.Constant;
 import functions.Cos;
 import functions.Function;
 import functions.Sin;
@@ -262,13 +263,22 @@ public class Graphic extends Canvas implements MouseMotionListener,
 
 	private void paintFunction(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
+		
+		Sin s = new Sin(new Variable());
 		g.setColor(Color.BLUE);
+		resolveFunction(g2, s);
+		
+		Cos c = new Cos(new Variable());
+		g.setColor(Color.MAGENTA);
+		resolveFunction(g2, c);
+		
 		Sum f = new Sum();
-		f.addFunction(new Sin(new Variable()));
-		f.addFunction(new Cos(new Variable()));
+		f.addFunction(new Constant(2));
+		f.addFunction(new Variable());
+		g.setColor(Color.GREEN);
 		resolveFunction(g2, f);
 	}
-
+	
 	private void resolveFunction(Graphics2D g2, Function f) {
 		double x1 = 0;
 		double x2 = 0;
