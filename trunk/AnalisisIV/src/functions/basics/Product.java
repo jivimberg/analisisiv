@@ -3,23 +3,45 @@ package functions.basics;
 import java.util.ArrayList;
 import java.util.List;
 
-import functions.Constant;
 import functions.Function;
 
 public class Product implements Function {
 
 	private List<Function> functions;
+	private double coefficient;
+
+	public Product(List<Function> functions, double coefficient) {
+		this.coefficient = coefficient;
+		functions = new ArrayList<Function>();
+		for (Function f : functions) {
+			addFunction(f);
+		}
+	}
 
 	public Product(List<Function> functions) {
-		this.functions = functions;
+		coefficient = 1;
+		functions = new ArrayList<Function>();
+		for (Function f : functions) {
+			addFunction(f);
+		}
 	}
 
 	public Product() {
+		coefficient = 1;
 		functions = new ArrayList<Function>();
 	}
 
+	public void setCoefficient(double coefficient) {
+		this.coefficient = coefficient;
+	}
+
 	public void addFunction(Function f) {
-		functions.add(f);
+		if(f.isConstant()) {
+			setCoefficient(coefficient * f.resolve(1));
+		} else {
+			setCoefficient(coefficient * f.getCoefficient());
+			functions.add(f.getFunctionWithoutCoefficient());			
+		}
 	}
 
 	@Override
@@ -36,17 +58,48 @@ public class Product implements Function {
 		return result;
 	}
 
+	@Override
 	public String toString() {
-		String result = "";
+		String result = "(c)" + coefficient;
 		for (int i = 0; i < functions.size(); i++) {
-			if (!functions.get(i).toString().equals("1.0")) {
-				if (i != 0) {
-					result += " * ";
-				}
-				result += functions.get(i).toString();
-			}
+			Function f = functions.get(i);
+			result +=  " * " + f.toString();
 		}
 		return result;
 	}
 
+	@Override
+	public String getType() {
+		return "Product";
+	}
+
+	@Override
+	public boolean isNegative() {
+		return false;
+	}
+
+	@Override
+	public boolean isPositive() {
+		return false;
+	}
+
+	@Override
+	public boolean isConstant() {
+		for (Function f : functions) {
+			if (!f.isConstant()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public double getCoefficient() {
+		return 1;
+	}
+
+	@Override
+	public Function getFunctionWithoutCoefficient() {
+		return new Product(functions);
+	}
 }
