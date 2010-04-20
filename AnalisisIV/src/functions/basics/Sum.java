@@ -3,12 +3,11 @@ package functions.basics;
 import java.util.ArrayList;
 import java.util.List;
 
-import functions.Constant;
 import functions.Function;
 
 public class Sum implements Function {
 
-	private List<Function> functions;
+	private List<Function> functions; 
 
 	public Sum(List<Function> functions) {
 		this.functions = functions;
@@ -26,7 +25,9 @@ public class Sum implements Function {
 	public Function derive() {
 		List<Function> derived = new ArrayList<Function>();
 		for (Function f : functions) {
-			derived.add(f.derive());
+			if (!f.isConstant()) {
+				derived.add(f.derive());
+			}
 		}
 		return new Sum(derived);
 	}
@@ -40,16 +41,58 @@ public class Sum implements Function {
 		return result;
 	}
 
+	@Override
 	public String toString() {
 		String result = "";
 		for (int i = 0; i < functions.size(); i++) {
-			if (!functions.get(i).toString().equals("0.0")) {
-				if (i != 0) {
-					result += " + ";
-				}
-				result += functions.get(i).toString();
+			Function f = functions.get(i);
+
+			if (!result.equals("") && f.isPositive()) {
+				result += " + ";
+			} else if (!result.equals("") && f.isNegative()) {
+				result += " ";
+			}
+
+			if (f.toString().equals("0")) {
+			} else {
+				result += f.toString();
 			}
 		}
 		return result;
 	}
+
+	@Override
+	public String getType() {
+		return "Sum";
+	}
+
+	@Override
+	public boolean isNegative() {
+		return false;
+	}
+
+	@Override
+	public boolean isPositive() {
+		return false;
+	}
+	
+	@Override
+	public boolean isConstant() {
+		for(Function f: functions) {
+			if(!f.isConstant()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public double getCoefficient() {
+		return 1;
+	}
+	
+	@Override
+	public Function getFunctionWithoutCoefficient() {
+		return new Sum(functions);
+	}	
 }
