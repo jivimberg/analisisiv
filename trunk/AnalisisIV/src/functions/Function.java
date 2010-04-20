@@ -7,4 +7,16 @@ public interface Function {
 	Function derive();
 	
 	String toString();
+	
+	String getType();
+	
+	boolean isNegative();
+	
+	boolean isPositive();
+	
+	boolean isConstant();
+	
+	double getCoefficient();
+	
+	Function getFunctionWithoutCoefficient();
 }
