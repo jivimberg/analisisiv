@@ -1,5 +1,7 @@
 package gui;
 
+import control.ActionManager;
+
 import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -14,10 +16,12 @@ public class MainFrame extends JFrame{
 
 	LeftPanel lPanel;
 	Graphic g;
+    ActionManager am;
 	
     public MainFrame() {
         this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         this.setTitle("Analisis IV");
+        this.am = new ActionManager();
         
         this.getContentPane().setLayout(new BorderLayout());
 //        corrector.listeners.add(this);
@@ -32,8 +36,9 @@ public class MainFrame extends JFrame{
             }
         });
         JToolBar toolBar = new JToolBar();
-        lPanel = new LeftPanel(showNumberOffsetAction, restartAxisAction, goToAction);
         g = new Graphic();
+        lPanel = new LeftPanel(am);
+        lPanel.createActions(g);
         this.getContentPane().add(lPanel, BorderLayout.WEST);
         this.getContentPane().add(toolBar, BorderLayout.NORTH);
         this.getContentPane().add(g, BorderLayout.CENTER);
@@ -46,26 +51,27 @@ public class MainFrame extends JFrame{
     
 	
 	
-	
+	/*BORRAR!!!*/
 	//arreglar!!!
     //solo de prueba!!!
-	private Action showNumberOffsetAction = new AbstractAction("Mostrar posición") {
-        public void actionPerformed(ActionEvent e) {
-        	g.showNumberOffset(!g.getShowNumberOffset());
-        }
-    };
-    
-    private Action restartAxisAction = new AbstractAction("Centrar ejes") {
-        public void actionPerformed(ActionEvent e) {
-        	g.resetPosition();
-        }
-    };
-    
-    private Action goToAction = new AbstractAction("Ir") {
-    	public void actionPerformed(ActionEvent e) {
-    		if(lPanel.getGoToX() != null && lPanel.getGoToY() != null) {
-    			g.goTo(lPanel.getGoToX(), lPanel.getGoToY());    			
-    		}
-    	}
-    };
+//	private Action showNumberOffsetAction = new AbstractAction("Mostrar posiciï¿½n") {
+//        public void actionPerformed(ActionEvent e) {
+//        	g.showNumberOffset(!g.getShowNumberOffset());
+//        }
+//    };
+//
+//    private Action restartAxisAction = new AbstractAction("Centrar ejes") {
+//        public void actionPerformed(ActionEvent e) {
+//        	g.resetPosition();
+//        }
+//    };
+//
+//    private Action goToAction = new AbstractAction("Ir") {
+//    	public void actionPerformed(ActionEvent e) {
+//    		if(lPanel.getGoToX() != null && lPanel.getGoToY() != null) {
+//    			g.goTo(lPanel.getGoToX(), lPanel.getGoToY());
+//    		}
+//    	}
+//    };
+
 }

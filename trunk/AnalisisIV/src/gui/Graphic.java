@@ -278,12 +278,12 @@ public class Graphic extends Canvas implements MouseMotionListener,
 		g.setColor(Color.GREEN);
 		resolveFunction(g2, f);
 	}
-	
+
 	private void resolveFunction(Graphics2D g2, Function f) {
-		double x1 = 0;
-		double x2 = 0;
-		double y1 = 0;
-		double y2 = 0;
+		double x1;
+		double x2;
+		double y1;
+		double y2;
 
 		double from = -(positionX + scale) / scale;
 		double to = (from + getWidth() / scale + scale * 2);

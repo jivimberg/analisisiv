@@ -1,5 +1,7 @@
 package gui;
 
+import control.ActionManager;
+
 import java.awt.Component;
 import java.awt.Font;
 
@@ -21,16 +23,22 @@ public class LeftPanel extends JPanel {
 	private Action goToAction;
 	private JTextField x;
 	private JTextField y;
+    private ActionManager am;
 
-	public LeftPanel(Action showNumberOffsetAction, Action restartAxisAction,
-			Action goToAction) {
-		this.showNumberOffsetAction = showNumberOffsetAction;
-		this.restartAxisAction = restartAxisAction;
-		this.goToAction = goToAction;
+	public LeftPanel(ActionManager am) {
+        this.am = am;
+    }
 
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		initComponents();
-	}
+    //Should be all in the constructor but then we would have a loop problem
+    public void createActions(Graphic g) 
+    {
+        this.showNumberOffsetAction = am.getShowNumberOffsetAction(g);
+        this.restartAxisAction = am.getRestartAxisAction(g);
+        this.goToAction = am.getGoToAction(g, this);
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        initComponents();
+    }
 
 	private void initComponents() {
 		this.add(createTopPanel());
@@ -73,7 +81,7 @@ public class LeftPanel extends JPanel {
 	private Component createGoToPanel() {
 		JPanel panel = new JPanel();
 		JButton goToButton = new JButton(goToAction);
-		goToButton.setToolTipText("Se dirije hacia la posición especificada");
+		goToButton.setToolTipText("Se dirije hacia la posiciÃ³n especificada");
 
 		x = new JTextField(3);
 		x.setBackground(getBackground());
@@ -107,7 +115,7 @@ public class LeftPanel extends JPanel {
 	private JPanel createFirstButtonPanel() {
 		JButton showNumberOffsetButton = new JButton(showNumberOffsetAction);
 		showNumberOffsetButton
-				.setToolTipText("Muestra la posición si alguno de los ejes no se ve");
+				.setToolTipText("Muestra la posiciÃ³n si alguno de los ejes no se ve");
 		JButton restartAxisButton = new JButton(restartAxisAction);
 		restartAxisButton
 				.setToolTipText("Centra los ejes en el medio de la pantalla");
@@ -141,4 +149,5 @@ public class LeftPanel extends JPanel {
 		}
 		return null;
 	}
+
 }
