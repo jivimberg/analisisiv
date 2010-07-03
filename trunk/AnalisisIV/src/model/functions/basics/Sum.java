@@ -1,5 +1,6 @@
 package model.functions.basics;
 
+import model.FunctionType;
 import model.functions.Function;
 
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 public class Sum implements Function {
 
     private List<Function> functions;
+    private final FunctionType functionType = FunctionType.SUM;
 
     public Sum(List<Function> functions) {
         this.functions = functions;
@@ -62,8 +64,8 @@ public class Sum implements Function {
     }
 
     @Override
-    public String getType() {
-        return "Sum";
+    public FunctionType getType() {
+        return functionType;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package model.functions;
 
+import model.FunctionType;
+
 public interface Function {
 
     double resolve(double x);
@@ -8,7 +10,7 @@ public interface Function {
 
     String toString();
 
-    String getType();
+    FunctionType getType();
 
     boolean isNegative();
 

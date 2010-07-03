@@ -1,5 +1,6 @@
 package model.functions.basics;
 
+import model.FunctionType;
 import model.functions.Function;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ public class Product implements Function {
 
     private List<Function> functions;
     private double coefficient;
+    private final FunctionType functionType = FunctionType.PRODUCT;
 
     public Product(List<Function> functions, double coefficient) {
         this.coefficient = coefficient;
@@ -69,8 +71,8 @@ public class Product implements Function {
     }
 
     @Override
-    public String getType() {
-        return "Product";
+    public FunctionType getType() {
+        return functionType;
     }
 
     @Override

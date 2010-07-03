@@ -1,8 +1,11 @@
 package model.functions;
 
+import model.FunctionType;
+
 public class Variable implements Function {
 
     private double coefficient;
+    private final FunctionType functionType = FunctionType.VARIABLE;
 
     public Variable() {
         this.coefficient = 1;
@@ -36,8 +39,8 @@ public class Variable implements Function {
     }
 
     @Override
-    public String getType() {
-        return "Variable";
+    public FunctionType getType() {
+        return functionType;
     }
 
     @Override

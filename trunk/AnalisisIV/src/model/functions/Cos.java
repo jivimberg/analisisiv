@@ -1,11 +1,13 @@
 package model.functions;
 
+import model.FunctionType;
 import model.functions.basics.Product;
 
 public class Cos implements Function {
 
     private Function internal;
     private Constant coefficient;
+    private final FunctionType functionType = FunctionType.COS;
 
     public Cos(Function internal, double coefficient) {
         this.internal = internal;
@@ -50,8 +52,8 @@ public class Cos implements Function {
     }
 
     @Override
-    public String getType() {
-        return "Cos";
+    public FunctionType getType() {
+        return functionType;
     }
 
     @Override
