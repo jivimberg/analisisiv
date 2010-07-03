@@ -1,11 +1,13 @@
 package model.functions;
 
+import model.FunctionType;
 import model.functions.basics.Product;
 
 public class Sin implements Function {
 
     private Function internal;
     private double coefficient;
+    private final FunctionType functionType = FunctionType.SIN;
 
     public Sin(Function internal, double coefficient) {
         this.internal = internal;
@@ -50,8 +52,8 @@ public class Sin implements Function {
     }
 
     @Override
-    public String getType() {
-        return "Sin";
+    public FunctionType getType() {
+        return functionType;
     }
 
     @Override

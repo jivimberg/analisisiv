@@ -1,8 +1,11 @@
 package model.functions;
 
+import model.FunctionType;
+
 public class Constant implements Function {
 
     private Double x;
+    private final FunctionType functionType = FunctionType.CONSTANT;
 
     public Constant(double x) {
         this.x = x;
@@ -28,8 +31,8 @@ public class Constant implements Function {
     }
 
     @Override
-    public String getType() {
-        return "Constant";
+    public FunctionType getType() {
+        return functionType;
     }
 
     @Override
