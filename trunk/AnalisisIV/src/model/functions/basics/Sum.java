@@ -1,32 +1,40 @@
 package model.functions.basics;
 
 import model.FunctionType;
-import model.functions.Function;
+import model.functions.MyFunction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Sum implements Function {
+public class Sum implements MyFunction {
 
-    private List<Function> functions;
+    private List<MyFunction> functions;
     private final FunctionType functionType = FunctionType.SUM;
 
-    public Sum(List<Function> functions) {
+    public Sum(List<MyFunction> functions) {
         this.functions = functions;
     }
 
-    public Sum() {
-        functions = new ArrayList<Function>();
+    public Sum(MyFunction[] functions) {
+        List<MyFunction> functionList = new ArrayList<MyFunction>();
+        for (MyFunction function : functions) {
+            functionList.add(function);
+        }
+        this.functions = functionList;
     }
 
-    public void addFunction(Function f) {
+    public Sum() {
+        functions = new ArrayList<MyFunction>();
+    }
+
+    public void addFunction(MyFunction f) {
         functions.add(f);
     }
 
     @Override
-    public Function derive() {
-        List<Function> derived = new ArrayList<Function>();
-        for (Function f : functions) {
+    public MyFunction derive() {
+        List<MyFunction> derived = new ArrayList<MyFunction>();
+        for (MyFunction f : functions) {
             if (!f.isConstant()) {
                 derived.add(f.derive());
             }
@@ -37,28 +45,8 @@ public class Sum implements Function {
     @Override
     public double resolve(double x) {
         double result = 0;
-        for (Function f : functions) {
+        for (MyFunction f : functions) {
             result += f.resolve(x);
-        }
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        String result = "";
-        for (int i = 0; i < functions.size(); i++) {
-            Function f = functions.get(i);
-
-            if (!result.equals("") && f.isPositive()) {
-                result += " + ";
-            } else if (!result.equals("") && f.isNegative()) {
-                result += " ";
-            }
-
-            if (f.toString().equals("0")) {
-            } else {
-                result += f.toString();
-            }
         }
         return result;
     }
@@ -69,18 +57,8 @@ public class Sum implements Function {
     }
 
     @Override
-    public boolean isNegative() {
-        return false;
-    }
-
-    @Override
-    public boolean isPositive() {
-        return false;
-    }
-
-    @Override
     public boolean isConstant() {
-        for (Function f : functions) {
+        for (MyFunction f : functions) {
             if (!f.isConstant()) {
                 return false;
             }
@@ -94,7 +72,7 @@ public class Sum implements Function {
     }
 
     @Override
-    public Function getFunctionWithoutCoefficient() {
+    public MyFunction getFunctionWithoutCoefficient() {
         return new Sum(functions);
     }
 }

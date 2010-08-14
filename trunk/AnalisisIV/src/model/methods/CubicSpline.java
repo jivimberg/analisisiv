@@ -1,5 +1,7 @@
 package model.methods;
 
+import model.functions.Utils;
+
 import java.awt.geom.Point2D;
 import java.util.List;
 
@@ -12,18 +14,18 @@ import java.util.List;
  */
 public class CubicSpline {
     /**
-     * A cubic spline is a spline constructed of piecewise third-order polynomials which pass through a set of  control points.
-     * The second derivative of each polynomial is commonly set to zero at the endpoints, since this provides a boundary condition that
-     * completes the system of  equations. This produces a so-called "natural" cubic spline and leads to a simple tridiagonal system
-     * which can be solved easily to give the coefficients of the polynomials.
+     * Una spline cúbica es una spline compuesta de segmentos de polinomios de tercer orden que pasan a traves de una serie de
+     * puntos de control. La segunda derivada de cada polinomio es comunmente cero en cada punto final, esto provee las condiciones de contorno que
+     * completan el sistema de ecuaciones. Esto produce lo llamado spline cúbica "natural" y lleva a un sistema simple tridiagonal que puede
+     * ser facilmente resuelto dando los coeficientes de los polinomios
      *
      * @author Juan Ignacio Vimberg
      */
 
     /*
-        * Interpolates the function using a natural cubic spline
+        * Interpola la función usando Spline Cúbica Natural
         *
-        * @param points  set of points to use in interpolation
+        * @param points  Set de puntos a usarse en la interpolación
         */
     public double[][] interpolate(List<Point2D.Double> points) {
 
@@ -50,7 +52,7 @@ public class CubicSpline {
         return s;
     }
 
-    private double[] solveTridiagonalSystem(int n, double[la b]h, double[] w) {
+    private double[] solveTridiagonalSystem(int n, double[] h, double[] w) {
         double[] l = new double[n];
         double[] u = new double[n];
         double[] z = new double[n];
@@ -69,5 +71,17 @@ public class CubicSpline {
         }
         z[0] = 0;
         return z;
+    }
+
+    public static void main(String[] args) {
+        List<Point2D.Double> points = Utils.createPoints();
+        CubicSpline li = new CubicSpline();
+        double[][] ds = li.interpolate(points);
+        for (int i = 0; i < ds.length; i++) {
+            for (int j = 0; j < ds.length; j++) {
+                System.out.println(ds[i][j]);
+            }
+
+        }
     }
 }

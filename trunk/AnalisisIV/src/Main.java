@@ -41,7 +41,7 @@ public class Main {
     }
 
     public static void showSplashScreen() {
-        SplashScreen splashScreen = new SplashScreen("shaimages/GStar.gif");
+        SplashScreen splashScreen = new SplashScreen("images/GStar.gif");
         splashScreen.open();
         try {
             Thread.sleep(7000);

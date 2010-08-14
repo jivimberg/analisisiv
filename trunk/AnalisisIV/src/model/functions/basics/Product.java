@@ -1,43 +1,43 @@
 package model.functions.basics;
 
 import model.FunctionType;
-import model.functions.Function;
+import model.functions.MyFunction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product implements Function {
+public class Product implements MyFunction {
 
-    private List<Function> functions;
+    private List<MyFunction> functions;
     private double coefficient;
     private final FunctionType functionType = FunctionType.PRODUCT;
 
-    public Product(List<Function> functions, double coefficient) {
+    public Product(List<MyFunction> functions, double coefficient) {
         this.coefficient = coefficient;
-        functions = new ArrayList<Function>();
-        for (Function f : functions) {
+        functions = new ArrayList<MyFunction>();
+        for (MyFunction f : functions) {
             addFunction(f);
         }
     }
 
-    public Product(List<Function> functions) {
+    public Product(List<MyFunction> functions) {
         coefficient = 1;
-        functions = new ArrayList<Function>();
-        for (Function f : functions) {
+        functions = new ArrayList<MyFunction>();
+        for (MyFunction f : functions) {
             addFunction(f);
         }
     }
 
     public Product() {
         coefficient = 1;
-        functions = new ArrayList<Function>();
+        functions = new ArrayList<MyFunction>();
     }
 
     public void setCoefficient(double coefficient) {
         this.coefficient = coefficient;
     }
 
-    public void addFunction(Function f) {
+    public void addFunction(MyFunction f) {
         if (f.isConstant()) {
             setCoefficient(coefficient * f.resolve(1));
         } else {
@@ -47,14 +47,14 @@ public class Product implements Function {
     }
 
     @Override
-    public Function derive() {
+    public MyFunction derive() {
         return null;
     }
 
     @Override
     public double resolve(double x) {
         double result = 1;
-        for (Function f : functions) {
+        for (MyFunction f : functions) {
             result *= f.resolve(x);
         }
         return result;
@@ -64,7 +64,7 @@ public class Product implements Function {
     public String toString() {
         String result = "(c)" + coefficient;
         for (int i = 0; i < functions.size(); i++) {
-            Function f = functions.get(i);
+            MyFunction f = functions.get(i);
             result += " * " + f.toString();
         }
         return result;
@@ -76,18 +76,8 @@ public class Product implements Function {
     }
 
     @Override
-    public boolean isNegative() {
-        return false;
-    }
-
-    @Override
-    public boolean isPositive() {
-        return false;
-    }
-
-    @Override
     public boolean isConstant() {
-        for (Function f : functions) {
+        for (MyFunction f : functions) {
             if (!f.isConstant()) {
                 return false;
             }
@@ -101,7 +91,7 @@ public class Product implements Function {
     }
 
     @Override
-    public Function getFunctionWithoutCoefficient() {
+    public MyFunction getFunctionWithoutCoefficient() {
         return new Product(functions);
     }
 }

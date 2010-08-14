@@ -266,7 +266,7 @@ public class Graphic extends Canvas implements MouseMotionListener,
         resolveFunction(g2, f);
     }
 
-    private void resolveFunction(Graphics2D g2, Function f) {
+    private void resolveFunction(Graphics2D g2, MyFunction f) {
         double x1;
         double x2;
         double y1;

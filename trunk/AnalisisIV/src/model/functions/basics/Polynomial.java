@@ -1,7 +1,7 @@
 package model.functions.basics;
 
 import model.FunctionType;
-import model.functions.Function;
+import model.functions.MyFunction;
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,7 +10,7 @@ import model.functions.Function;
  * Time: 5:11:14 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Polynomial implements Function {
+public class Polynomial implements MyFunction {
 
     private int degree;
     private double[] coefficients;
@@ -21,7 +21,7 @@ public class Polynomial implements Function {
         this.degree = degree;
     }
 
-    public Function derive() {
+    public MyFunction derive() {
         double[] newCoeff = new double[coefficients.length - 1];
         int exponent = degree;
         for (int i = 0; i < newCoeff.length; i++) {
@@ -51,22 +51,22 @@ public class Polynomial implements Function {
         for (double coeff : coefficients) {
             if (exponent == 0) {
                 if (coeff < 0) {
-                    result.concat("-" + coeff);
+                    result = result.concat("-" + coeff);
                 } else {
-                    result.concat("" + coeff);
+                    result = result.concat("" + coeff);
                 }
             }
             if (exponent == 1) {
                 if (coeff < 0) {
-                    result.concat("-" + coeff + "x");
+                    result = result.concat("-" + coeff + "x");
                 } else {
-                    result.concat(coeff + "x");
+                    result = result.concat(coeff + "x");
                 }
             }
             if (coeff < 0) {
-                result.concat("-" + coeff + "x^" + exponent);
+                result = result.concat("-" + coeff + "x^" + exponent);
             } else {
-                result.concat(coeff + "x^" + exponent);
+                result = result.concat(coeff + "x^" + exponent);
             }
             exponent++;
         }
@@ -76,16 +76,6 @@ public class Polynomial implements Function {
     @Override
     public FunctionType getType() {
         return functionType;
-    }
-
-    @Override
-    public boolean isNegative() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean isPositive() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
@@ -99,12 +89,12 @@ public class Polynomial implements Function {
     }
 
     @Override
-    public Function getFunctionWithoutCoefficient() {
+    public MyFunction getFunctionWithoutCoefficient() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public static void main(String[] args) {
         Polynomial p = new Polynomial(2, new double[]{2, 3, -1});
-        System.out.println(p.toString());
+        System.out.println("Polinomio: " + p.toString());
     }
 }
