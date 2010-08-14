@@ -2,23 +2,17 @@ package model.functions;
 
 import model.FunctionType;
 
-public interface Function {
+public interface MyFunction {
 
     double resolve(double x);
 
-    Function derive();
-
-    String toString();
+    MyFunction derive();
 
     FunctionType getType();
-
-    boolean isNegative();
-
-    boolean isPositive();
 
     boolean isConstant();
 
     double getCoefficient();
 
-    Function getFunctionWithoutCoefficient();
+    MyFunction getFunctionWithoutCoefficient();
 }

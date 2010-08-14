@@ -1,7 +1,6 @@
 package model.methods;
 
 import model.exceptions.RootNotFoundException;
-import model.functions.Function;
 
 /**
  * Created by IntelliJ IDEA.
@@ -17,19 +16,20 @@ public class NewtonRaphson {
      */
 
     /**
-     * This method find the root of the function by Newton-Raphson
+     * Este método encuentra la raíz de la función por medio de Newton Raphson
      *
-     * @param p0            starting point. This point should be as close as posible to the root.
-     * @param error         expected error
-     * @param maxIterations max itereations allowed
+     * @param function      the  función numérica
+     * @param p0            punto de inicio. Debe ser lo más cercano posible a la raíz
+     * @param error         margen de error tolerado
+     * @param maxIterations número máximo de iteraciones permitidas
      */
-    public double findRoot(Function function, double p0, double error, int maxIterations)
+    public double findRoot(Function function, Function derivedF, double p0, double error, int maxIterations)
             throws RootNotFoundException {
         int iterations = 0;
         double p = p0;
         while (iterations < maxIterations) {
             //Xn+1 = Xn - f(x) / f'(x)
-            double root = p - function.resolve(p) / function.derive().resolve(p);
+            double root = p - function.resolve(p) / derivedF.resolve(p);
             if (Math.abs(root - p) < error) {
                 return root;
             }
@@ -40,10 +40,13 @@ public class NewtonRaphson {
     }
 
     public static void main(String[] args) {
-//		try {
-//			System.out.println(new NewtonRaphson().findRoot(new Polynomial(2, new double[] { -4, 0, 1 }), 3, 0.25, 100));
-//		} catch (RootNotFoundException e) {
-//			e.printStackTrace();
-//		}
-	}    
+        try {
+            Function f = new Function();
+            e
+
+            System.out.println(new NewtonRaphson().findRoot(f, f, 1.5, 0.01, 1000));
+        } catch (RootNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 }

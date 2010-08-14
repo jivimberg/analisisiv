@@ -3,24 +3,24 @@ package model.functions;
 import model.FunctionType;
 import model.functions.basics.Product;
 
-public class Sin implements Function {
+public class Sin implements MyFunction {
 
-    private Function internal;
+    private MyFunction internal;
     private double coefficient;
     private final FunctionType functionType = FunctionType.SIN;
 
-    public Sin(Function internal, double coefficient) {
+    public Sin(MyFunction internal, double coefficient) {
         this.internal = internal;
         this.coefficient = coefficient;
     }
 
-    public Sin(Function internal) {
+    public Sin(MyFunction internal) {
         this.internal = internal;
         this.coefficient = 1;
     }
 
     @Override
-    public Function derive() {
+    public MyFunction derive() {
         if (isConstant()) {
             return new Constant(0);
         } else if (internal.isConstant()) {
@@ -57,16 +57,6 @@ public class Sin implements Function {
     }
 
     @Override
-    public boolean isNegative() {
-        return coefficient < 0;
-    }
-
-    @Override
-    public boolean isPositive() {
-        return coefficient > 0;
-    }
-
-    @Override
     public boolean isConstant() {
         return internal.isConstant();
     }
@@ -77,7 +67,7 @@ public class Sin implements Function {
     }
 
     @Override
-    public Function getFunctionWithoutCoefficient() {
+    public MyFunction getFunctionWithoutCoefficient() {
         return new Sin(internal);
     }
 }

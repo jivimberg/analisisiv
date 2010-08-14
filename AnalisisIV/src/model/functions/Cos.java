@@ -3,24 +3,24 @@ package model.functions;
 import model.FunctionType;
 import model.functions.basics.Product;
 
-public class Cos implements Function {
+public class Cos implements MyFunction {
 
-    private Function internal;
+    private MyFunction internal;
     private Constant coefficient;
     private final FunctionType functionType = FunctionType.COS;
 
-    public Cos(Function internal, double coefficient) {
+    public Cos(MyFunction internal, double coefficient) {
         this.internal = internal;
         this.coefficient = new Constant(coefficient);
     }
 
-    public Cos(Function internal) {
+    public Cos(MyFunction internal) {
         this.internal = internal;
         this.coefficient = new Constant(1);
     }
 
     @Override
-    public Function derive() {
+    public MyFunction derive() {
         if (isConstant()) {
             return new Constant(0);
         } else if (internal.isConstant()) {
@@ -57,16 +57,6 @@ public class Cos implements Function {
     }
 
     @Override
-    public boolean isNegative() {
-        return coefficient.getNumber() < 0;
-    }
-
-    @Override
-    public boolean isPositive() {
-        return coefficient.getNumber() > 0;
-    }
-
-    @Override
     public boolean isConstant() {
         return internal.isConstant();
     }
@@ -77,7 +67,7 @@ public class Cos implements Function {
     }
 
     @Override
-    public Function getFunctionWithoutCoefficient() {
+    public MyFunction getFunctionWithoutCoefficient() {
         return new Cos(internal);
     }
 }

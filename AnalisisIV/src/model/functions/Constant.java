@@ -2,7 +2,7 @@ package model.functions;
 
 import model.FunctionType;
 
-public class Constant implements Function {
+public class Constant implements MyFunction {
 
     private Double x;
     private final FunctionType functionType = FunctionType.CONSTANT;
@@ -12,7 +12,7 @@ public class Constant implements Function {
     }
 
     @Override
-    public Function derive() {
+    public MyFunction derive() {
         return new Constant(0);
     }
 
@@ -36,16 +36,6 @@ public class Constant implements Function {
     }
 
     @Override
-    public boolean isNegative() {
-        return x < 0;
-    }
-
-    @Override
-    public boolean isPositive() {
-        return x > 0;
-    }
-
-    @Override
     public boolean isConstant() {
         return true;
     }
@@ -56,7 +46,7 @@ public class Constant implements Function {
     }
 
     @Override
-    public Function getFunctionWithoutCoefficient() {
+    public MyFunction getFunctionWithoutCoefficient() {
         return new Constant(x);
     }
 

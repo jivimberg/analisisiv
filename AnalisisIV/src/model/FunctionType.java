@@ -14,5 +14,6 @@ public enum FunctionType {
     POLYNOMIAL,
     COS,
     CONSTANT,
-    SIN;
+    INTERPOLATOR,
+    SIN, COMPOUND;
 }

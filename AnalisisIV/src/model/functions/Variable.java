@@ -2,7 +2,7 @@ package model.functions;
 
 import model.FunctionType;
 
-public class Variable implements Function {
+public class Variable implements MyFunction {
 
     private double coefficient;
     private final FunctionType functionType = FunctionType.VARIABLE;
@@ -16,7 +16,7 @@ public class Variable implements Function {
     }
 
     @Override
-    public Function derive() {
+    public MyFunction derive() {
         return new Constant(coefficient);
     }
 
@@ -44,16 +44,6 @@ public class Variable implements Function {
     }
 
     @Override
-    public boolean isNegative() {
-        return coefficient < 0;
-    }
-
-    @Override
-    public boolean isPositive() {
-        return coefficient > 0;
-    }
-
-    @Override
     public boolean isConstant() {
         return false;
     }
@@ -64,7 +54,7 @@ public class Variable implements Function {
     }
 
     @Override
-    public Function getFunctionWithoutCoefficient() {
+    public MyFunction getFunctionWithoutCoefficient() {
         return new Variable();
     }
 }
